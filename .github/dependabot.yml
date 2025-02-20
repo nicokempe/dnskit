@@ -13,14 +13,14 @@ updates:
     commit-message:
       prefix: "[go] "
 - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "09:00"
-      timezone: "Europe/Berlin"
-    assignees:
-      - "nicokempe"
-    reviewers:
-      - "nicokempe"
-    commit-message:
-      prefix: "[actions] "
+  directory: "/"
+  schedule:
+    interval: "daily"
+    time: "09:00"
+    timezone: "Europe/Berlin"
+  assignees:
+    - "nicokempe"
+  reviewers:
+    - "nicokempe"
+  commit-message:
+    prefix: "[actions] "
