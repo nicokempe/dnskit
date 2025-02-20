@@ -1,26 +1,26 @@
 version: 2
 updates:
-- package-ecosystem: gomod
-  directory: "/"
-  schedule:
-    interval: "daily"
-    time: "09:00"
-    timezone: "Europe/Berlin"
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "Europe/Berlin"
     assignees:
       - "nicokempe"
     reviewers:
       - "nicokempe"
     commit-message:
       prefix: "[go] "
-- package-ecosystem: "github-actions"
-  directory: "/"
-  schedule:
-    interval: "daily"
-    time: "09:00"
-    timezone: "Europe/Berlin"
-  assignees:
-    - "nicokempe"
-  reviewers:
-    - "nicokempe"
-  commit-message:
-    prefix: "[actions] "
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "Europe/Berlin"
+    assignees:
+      - "nicokempe"
+    reviewers:
+      - "nicokempe"
+    commit-message:
+      prefix: "[actions] "
