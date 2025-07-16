@@ -8,10 +8,8 @@ updates:
       timezone: "Europe/Berlin"
     assignees:
       - "nicokempe"
-    reviewers:
-      - "nicokempe"
     commit-message:
-      prefix: "[go] "
+      prefix: "chore(go): "
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -20,7 +18,5 @@ updates:
       timezone: "Europe/Berlin"
     assignees:
       - "nicokempe"
-    reviewers:
-      - "nicokempe"
     commit-message:
-      prefix: "[actions] "
+      prefix: "chore(actions): "
