@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/fatih/color v1.18.0
-	github.com/miekg/dns v1.1.67
+	github.com/miekg/dns v1.1.68
 	github.com/spf13/cobra v1.9.1
 )
 
