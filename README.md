@@ -2,86 +2,153 @@
 
 ## ✨ Features
 
-* 🔎 **DNS Lookup** for all major record types (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`, etc.)
+* 🔎 **DNS Lookup** for all major record types (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`, …)
 * 🚀 **Subdomain Enumeration** with concurrency for speed
 * 🛡 **Zone Transfer** (`AXFR`) checks to find misconfigurations
 * ↩️ **Reverse DNS** lookups (IPv4 + IPv6)
-* 🧩 **Custom DNS Resolver** support (e.g., `8.8.8.8`)
-* 🎨 **JSON or Colorized** output for flexible workflows
-* 💻 **Cross-Platform** (macOS, Linux, Windows)
+* 🧩 **Custom DNS Resolver** (e.g., `8.8.8.8` or `8.8.8.8:53`)
+* 🎨 **JSON or Colorized** output
+* 💻 **Cross-Platform** (Windows, macOS, Linux)
 
-## ⚙️ Installation
+## 📦 Installation
 
-1. **Clone** the repository
+### Download prebuilt binaries (recommended)
 
-   ```bash
-   git clone git@github.com:nicokempe/dnskit.git
-   cd dnskit
-   ```
+Grab the latest ZIP/TAR for your OS/arch from the [Releases](https://github.com/nicokempe/dnskit/releases) page and put the `dnskit` binary on your `PATH`.
 
-2. **Build** the binary
+* **Windows:** download `dnskit_*_windows_amd64.zip` (or `arm64`), unzip, run `dnskit.exe`
+* **macOS:** download `dnskit_*_darwin_amd64.tar.gz` (or `arm64`), extract, run `./dnskit`
+* **Linux:** download `dnskit_*_linux_amd64.tar.gz` (or `arm64`), extract, run `./dnskit`
+  *(Deb/RPM packages are also available under Assets.)*
 
-   ```bash
-   go build -o dnskit main.go
-   ```
-
-   → Produces an executable named `dnskit` (or `dnskit.exe` on Windows).
-
-3. (Optional) **Install globally**
-
-   ```bash
-   go install
-   ```
-
-## 🖥 Usage
-
-Run after building:
+### Build from source
 
 ```bash
-./dnskit --help
+git clone https://github.com/nicokempe/dnskit.git
+cd dnskit
+go build -o dnskit .
+# or install to $GOBIN
+go install ./...
 ```
 
-🔧 **Global Flags**
+> Official releases are built via GoReleaser and embed version/commit metadata.
+> Local builds show `dev` unless you set `-ldflags`.
 
-* `--json` → Output results in JSON format
-* `--resolver <IP>` → Use a custom resolver (e.g., `8.8.8.8`)
+## 🚀 Usage
 
-## 🛠 Subcommands
+```bash
+dnskit --help
+```
 
-* 🔎 **lookup**
-  Perform DNS lookups of a given record type
+**Global Flags**
+
+* `--json` — Output results in JSON format
+* `--resolver <ip[:port]>` — Use a custom DNS resolver
+
+### Subcommands
+
+* **lookup** — Query a specific record type
 
   ```bash
   dnskit lookup <hostname> --type A|AAAA|MX|TXT|NS|CNAME|SRV
   ```
 
-* 🌐 **enum**
-  Enumerate subdomains with concurrency
+* **enum** — Enumerate subdomains with concurrency
 
   ```bash
   dnskit enum <domain> --wordlist subdomains.txt --concurrency 10
   ```
 
-* 🛡 **transfer**
-  Attempt a DNS zone transfer (AXFR)
+* **transfer** — Attempt DNS zone transfer (AXFR)
 
   ```bash
   dnskit transfer <domain> --nameserver <ns.host>
   ```
 
-* ↩️ **reverse**
-  Reverse DNS lookups for IPv4/IPv6
+* **reverse** — Reverse DNS lookups (IPv4/IPv6)
 
   ```bash
   dnskit reverse <ip>
   ```
 
-## 🔧 Advanced Usage
+## 🧾 Versioning
 
-* ⚡ **Concurrency** → Adjust with `--concurrency` for faster/larger scans
-* 🧩 **Custom Resolver** → Override OS defaults with `--resolver 8.8.8.8:53`
-* 🎨 **Color vs JSON** → Use color for interactive use, JSON for automation/scripts
+Releases follow the format **`vYYYY.MM.VV`**:
+
+* `YYYY` — year (e.g., `2025`)
+* `MM` — month (`01`–`12`)
+* `VV` — sequential release number within the month (resets each month)
+
+Examples:
+
+* `v2025.08.1` → first release in August 2025
+* `v2025.08.2` → second release in August 2025
+
+## 📝 Release Workflow
+
+1. **Update Changelog**
+
+   Run [changelogen](https://github.com/unjs/changelogen) to update `CHANGELOG.md`:
+
+   ```bash
+   npx changelogen --release
+   ```
+
+   Commit the updated `CHANGELOG.md`.
+
+2. **Create a new release tag**
+
+   Use the provided script for your OS:
+
+   * **Windows (PowerShell)**
+
+     ```powershell
+     ./scripts/new-release.ps1 v2025.08.1
+     ```
+
+   * **Linux/macOS (Bash)**
+
+     ```bash
+     ./scripts/new-release.sh v2025.08.1
+     ```
+
+   These scripts:
+
+   * Validate the version format
+   * Commit any pending changes
+   * Create a Git tag
+   * Push tag → triggers GitHub Actions GoReleaser
+
+3. **GitHub Actions builds & publishes**
+
+   Once the tag is pushed, the CI pipeline:
+
+   * Builds binaries for Linux, macOS, Windows (amd64 + arm64)
+   * Packages as `.tar.gz`, `.zip`, `.deb`, `.rpm`
+   * Publishes assets to GitHub Releases
+   * Updates Winget manifests (if configured)
+
+## 🧰 Development
+
+* Requires **Go 1.24+**
+
+* Quick build:
+
+  ```bash
+  go build -o dnskit .
+  ```
+
+* Cross-compile + package (local snapshot):
+
+  ```bash
+  goreleaser release --snapshot --skip=publish --clean
+  ```
+
+## 📝 Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md).
+Generated automatically from Conventional Commits via [changelogen](https://github.com/unjs/changelogen).
 
 ## 📜 License
 
-This project is licensed under the [MIT License](https://github.com/nicokempe/dnskit/blob/main/LICENSE).
+MIT — see [LICENSE](./LICENSE).
