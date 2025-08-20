@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/nicokempe/dnskit/pkg/version"
 	"github.com/spf13/cobra"
 )
 
@@ -23,6 +24,7 @@ var rootCmd = &cobra.Command{
 	Short: "DNSKit - A modern DNS analysis CLI",
 	Long: `DNSKit is a modern and structured command-line tool
 designed for DNS analysis, penetration testing, and system administration.`,
+	Version: version.Version,
 	// This runs when the user calls `dnskit` without any subcommand
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Welcome to DNSKit! Type --help or -h to see available commands.")
