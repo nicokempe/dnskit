@@ -1,8 +1,3 @@
-⚡ A modern, multi-featured command-line tool for DNS analysis, penetration testing, and system administration.
-DNSKit provides blazing-fast subdomain enumeration with concurrency, custom DNS resolvers for advanced cases, and output in either JSON or a beautiful colorized format.
-
----
-
 ## ✨ Features
 
 * 🔎 **DNS Lookup** for all major record types (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`, etc.)
