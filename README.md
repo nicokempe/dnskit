@@ -91,10 +91,10 @@ Examples:
    Run [changelogen](https://github.com/unjs/changelogen) to update `CHANGELOG.md`:
 
    ```bash
-   npx changelogen --release
+   npx changelogen@latest --output CHANGELOG.md
    ```
 
-   Commit the updated `CHANGELOG.md`.
+   Commit the updated `CHANGELOG.md` (e.g. as "docs(release): update changelog"".
 
 2. **Create a new release tag**
 
