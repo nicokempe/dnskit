@@ -1,8 +1,26 @@
 # Changelog
 
+## v2025.08.2
 
-## ...main
+[compare changes](https://github.com/nicokempe/dnskit/compare/v2025.08.1...main)
 
+### 📖 Documentation
+
+- **readme:** Revamp README with usage, install, and release info ([9bdf2c8](https://github.com/nicokempe/dnskit/commit/9bdf2c8))
+
+### 🏡 Chore
+
+- Remove homebrew and scoop release configs ([320051b](https://github.com/nicokempe/dnskit/commit/320051b))
+
+### 🤖 CI
+
+- **scripts:** Add scripts for automated release tagging ([68cfc78](https://github.com/nicokempe/dnskit/commit/68cfc78))
+
+### ❤️ Contributors
+
+- Nico Kempe <git@nicokempe.de>
+
+## v2025.08.1
 
 ### 🚀 Enhancements
 
