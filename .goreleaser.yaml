@@ -1,3 +1,5 @@
+version: 2
+
 project_name: dnskit
 
 builds:
@@ -5,38 +7,38 @@ builds:
     main: .
     binary: dnskit
     ldflags:
-      - -s -w -X github.com/nicokempe/dnskit/pkg/version.Version={{.Version}} -X github.com/nicokempe/dnskit/pkg/version.Commit={{.Commit}} -X github.com/nicokempe/dnskit/pkg/version.Date={{.Date}}
-    goos:
-      - linux
-      - darwin
-      - windows
-    goarch:
-      - amd64
-      - arm64
+      - "-s -w -X github.com/nicokempe/dnskit/pkg/version.Version={{.Version}} -X github.com/nicokempe/dnskit/pkg/version.Commit={{.Commit}} -X github.com/nicokempe/dnskit/pkg/version.Date={{.Date}}"
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
 
 archives:
-  - format: tar.gz
-    builds:
-      - dnskit
-    name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+  - id: default
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    formats: ["tar.gz"]
+    format_overrides:
+      - goos: windows
+        formats: ["zip"]
+    files:
+      - LICENSE
+      - README.md
 
-brews:
+homebrew_casks:
   - name: dnskit
-    tap: nicokempe/homebrew-tap
-    commit_author:
-      name: goreleaserbot
-      email: bot@goreleaser.com
-    description: DNSKit - A modern DNS analysis CLI
+    repository:
+      owner: nicokempe
+      name: homebrew-tap
+      branch: main
     homepage: https://github.com/nicokempe/dnskit
+    description: DNSKit - A modern DNS analysis CLI
+    license: MIT
+    binary: dnskit
 
-scoop:
+scoops:
   - name: dnskit
-    bucket:
+    repository:
       owner: nicokempe
       name: scoop-bucket
-    commit_author:
-      name: goreleaserbot
-      email: bot@goreleaser.com
+      branch: main
     homepage: https://github.com/nicokempe/dnskit
     description: DNSKit - A modern DNS analysis CLI
 

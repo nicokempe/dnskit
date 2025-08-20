@@ -3,23 +3,36 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
-  packages: write
+
+concurrency:
+  group: goreleaser-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          go-version: stable
-      - uses: goreleaser/goreleaser-action@v6
+          fetch-depth: 0 # needed so GoReleaser can read tags/commits
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: GoReleaser
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
           args: release --clean
         env:
+          # Publishes the GitHub Release in this repo:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
