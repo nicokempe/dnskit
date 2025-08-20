@@ -22,26 +22,6 @@ archives:
       - LICENSE
       - README.md
 
-homebrew_casks:
-  - name: dnskit
-    repository:
-      owner: nicokempe
-      name: homebrew-tap
-      branch: main
-    homepage: https://github.com/nicokempe/dnskit
-    description: DNSKit - A modern DNS analysis CLI
-    license: MIT
-    binary: dnskit
-
-scoops:
-  - name: dnskit
-    repository:
-      owner: nicokempe
-      name: scoop-bucket
-      branch: main
-    homepage: https://github.com/nicokempe/dnskit
-    description: DNSKit - A modern DNS analysis CLI
-
 winget:
   - name: dnskit
     publisher: Nico Kempe
