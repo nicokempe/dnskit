@@ -1,3 +1,5 @@
+[![DNSKit GitHub Banner](/.github/banner.webp)](https://www.nicokempe.de)
+
 ## ✨ Features
 
 * 🔎 **DNS Lookup** for all major record types (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`, etc.)
