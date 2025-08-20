@@ -12,7 +12,7 @@ import (
 // executed concurrently according to the provided concurrency level and may use
 // a custom DNS resolver.
 func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string) ([]string, error) {
-	var subdomains []string
+	var discoveredSubdomains []string
 
 	if wordlistPath == "" {
 		return nil, fmt.Errorf("no wordlist provided")
@@ -22,44 +22,44 @@ func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string
 		concurrency = 1
 	}
 
-	file, err := os.Open(wordlistPath)
+	wordlistFile, err := os.Open(wordlistPath)
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer wordlistFile.Close()
 
-	r := getResolver(resolverAddr)
-	ctx := context.Background()
+	resolver := getResolver(resolverAddr)
+	lookupCtx := context.Background()
 
-	jobs := make(chan string)
-	var wg sync.WaitGroup
-	var mu sync.Mutex
+	wordQueue := make(chan string)
+	var waitGroup sync.WaitGroup
+	var resultMutex sync.Mutex
 
-	for i := 0; i < concurrency; i++ {
-		wg.Add(1)
+	for workerID := 0; workerID < concurrency; workerID++ {
+		waitGroup.Add(1)
 		go func() {
-			defer wg.Done()
-			for sub := range jobs {
-				candidate := fmt.Sprintf("%s.%s", sub, domain)
-				if _, err := r.LookupIPAddr(ctx, candidate); err == nil {
-					mu.Lock()
-					subdomains = append(subdomains, candidate)
-					mu.Unlock()
+			defer waitGroup.Done()
+			for word := range wordQueue {
+				candidateSubdomain := fmt.Sprintf("%s.%s", word, domain)
+				if _, err := resolver.LookupIPAddr(lookupCtx, candidateSubdomain); err == nil {
+					resultMutex.Lock()
+					discoveredSubdomains = append(discoveredSubdomains, candidateSubdomain)
+					resultMutex.Unlock()
 				}
 			}
 		}()
 	}
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(wordlistFile)
 	for scanner.Scan() {
-		jobs <- scanner.Text()
+		wordQueue <- scanner.Text()
 	}
-	close(jobs)
-	wg.Wait()
+	close(wordQueue)
+	waitGroup.Wait()
 
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 
-	return subdomains, nil
+	return discoveredSubdomains, nil
 }

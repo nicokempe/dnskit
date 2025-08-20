@@ -2,23 +2,30 @@ package output
 
 import (
 	"fmt"
+
 	"github.com/fatih/color"
 )
 
 var (
-	InfoColor    = color.New(color.FgBlue).SprintFunc()
-	SuccessColor = color.New(color.FgGreen).SprintFunc()
-	ErrorColor   = color.New(color.FgRed).SprintFunc()
+	// infoColorFormatter formats informational messages in blue.
+	infoColorFormatter = color.New(color.FgBlue).SprintFunc()
+	// successColorFormatter formats success messages in green.
+	successColorFormatter = color.New(color.FgGreen).SprintFunc()
+	// errorColorFormatter formats error messages in red.
+	errorColorFormatter = color.New(color.FgRed).SprintFunc()
 )
 
-func Info(msg string) {
-	fmt.Println(InfoColor(msg))
+// Info prints an informational message.
+func Info(message string) {
+	fmt.Println(infoColorFormatter(message))
 }
 
-func Success(msg string) {
-	fmt.Println(SuccessColor(msg))
+// Success prints a success message.
+func Success(message string) {
+	fmt.Println(successColorFormatter(message))
 }
 
-func Error(msg string) {
-	fmt.Println(ErrorColor(msg))
+// Error prints an error message.
+func Error(message string) {
+	fmt.Println(errorColorFormatter(message))
 }

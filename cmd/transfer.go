@@ -8,30 +8,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nameserver string
+// nameserverAddr specifies the target nameserver for zone transfers.
+var nameserverAddr string
 
+// transferCmd attempts a DNS zone transfer (AXFR) for the given domain.
 var transferCmd = &cobra.Command{
 	Use:   "transfer [domain]",
 	Short: "Attempt a DNS zone transfer (AXFR)",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		domain := args[0]
-		records, err := dnsutils.ZoneTransfer(domain, nameserver)
+		zoneRecords, err := dnsutils.ZoneTransfer(domain, nameserverAddr)
 		if err != nil {
 			fmt.Printf("Zone transfer failed: %v\n", err)
 			return nil
 		}
 
 		if outputJSON {
-			data := map[string]interface{}{"domain": domain, "records": records}
-			b, err := json.MarshalIndent(data, "", "  ")
+			outputData := map[string]interface{}{"domain": domain, "records": zoneRecords}
+			jsonOutput, err := json.MarshalIndent(outputData, "", "  ")
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(b))
+			fmt.Println(string(jsonOutput))
 		} else {
-			for _, record := range records {
-				output.Success(record)
+			for _, zoneRecord := range zoneRecords {
+				output.Success(zoneRecord)
 			}
 		}
 		return nil
@@ -40,5 +42,5 @@ var transferCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(transferCmd)
-	transferCmd.Flags().StringVarP(&nameserver, "nameserver", "n", "", "Nameserver to use for zone transfer")
+	transferCmd.Flags().StringVarP(&nameserverAddr, "nameserver", "n", "", "Nameserver to use for zone transfer")
 }

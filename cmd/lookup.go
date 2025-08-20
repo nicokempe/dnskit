@@ -8,29 +8,31 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// recordType specifies the DNS record type for lookup.
 var recordType string
 
+// lookupCmd performs DNS record lookups for a given hostname.
 var lookupCmd = &cobra.Command{
 	Use:   "lookup [hostname]",
 	Short: "Perform basic DNS lookups",
 	Args:  cobra.ExactArgs(1), // We expect exactly one hostname argument
 	RunE: func(cmd *cobra.Command, args []string) error {
 		hostname := args[0]
-		results, err := dnsutils.Lookup(hostname, recordType, resolver)
+		recordResults, err := dnsutils.Lookup(hostname, recordType, resolver)
 		if err != nil {
 			return err
 		}
 
 		if outputJSON {
-			data := map[string]interface{}{"hostname": hostname, "type": recordType, "records": results}
-			b, err := json.MarshalIndent(data, "", "  ")
+			outputData := map[string]interface{}{"hostname": hostname, "type": recordType, "records": recordResults}
+			jsonOutput, err := json.MarshalIndent(outputData, "", "  ")
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(b))
+			fmt.Println(string(jsonOutput))
 		} else {
-			for _, r := range results {
-				output.Success(r)
+			for _, record := range recordResults {
+				output.Success(record)
 			}
 		}
 		return nil

@@ -5,45 +5,47 @@ import (
 	"github.com/miekg/dns"
 )
 
-// ZoneTransfer attempts to perform a DNS zone transfer
-func ZoneTransfer(domain, nameserver string) ([]string, error) {
-	if nameserver == "" {
+// ZoneTransfer attempts to perform a DNS zone transfer against the provided nameserver.
+func ZoneTransfer(domain, nameserverAddr string) ([]string, error) {
+	if nameserverAddr == "" {
 		return nil, fmt.Errorf("no nameserver provided")
 	}
 
-	var results []string
-	// Making sure, that the nameserver has the port appended if not provided
-	if nameserver[:1] == "[" || nameserver[len(nameserver)-1:] == "]" {
+	var zoneRecords []string
+	// Ensure the nameserver address includes a port; default to 53.
+	if nameserverAddr[:1] == "[" || nameserverAddr[len(nameserverAddr)-1:] == "]" {
 		// IPv6 in brackets
-		if len(nameserver) >= 2 && nameserver[len(nameserver)-2:] != ":53" {
-			nameserver = fmt.Sprintf("%s:53", nameserver)
+		if len(nameserverAddr) >= 2 && nameserverAddr[len(nameserverAddr)-2:] != ":53" {
+			nameserverAddr = fmt.Sprintf("%s:53", nameserverAddr)
 		}
-	} else if len(nameserver) > 0 && nameserver[len(nameserver)-1] != ']' && !containsPort(nameserver) {
-		nameserver = fmt.Sprintf("%s:53", nameserver)
+	} else if len(nameserverAddr) > 0 && nameserverAddr[len(nameserverAddr)-1] != ']' && !containsPort(nameserverAddr) {
+		nameserverAddr = fmt.Sprintf("%s:53", nameserverAddr)
 	}
 
-	// Preparing AXFR message
-	m := new(dns.Msg)
-	m.SetAxfr(domain + ".")
-	t := new(dns.Transfer)
+	// Prepare AXFR message
+	zoneTransferMsg := new(dns.Msg)
+	zoneTransferMsg.SetAxfr(domain + ".")
 
-	// Performing the transfer
-	channel, err := t.In(m, nameserver)
+	transferClient := new(dns.Transfer)
+
+	// Perform the transfer
+	transferResults, err := transferClient.In(zoneTransferMsg, nameserverAddr)
 	if err != nil {
 		return nil, err
 	}
 
-	for envelope := range channel {
+	for envelope := range transferResults {
 		if envelope.Error != nil {
 			return nil, envelope.Error
 		}
-		for _, rr := range envelope.RR {
-			results = append(results, rr.String())
+		for _, resourceRecord := range envelope.RR {
+			zoneRecords = append(zoneRecords, resourceRecord.String())
 		}
 	}
-	return results, nil
+	return zoneRecords, nil
 }
 
-func containsPort(host string) bool {
-	return len(host) > 0 && (host[0] == '[' || (host[len(host)-3:] == ":53"))
+// containsPort checks whether the host string already specifies a port.
+func containsPort(hostAddress string) bool {
+	return len(hostAddress) > 0 && (hostAddress[0] == '[' || (hostAddress[len(hostAddress)-3:] == ":53"))
 }

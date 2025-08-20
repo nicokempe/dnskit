@@ -17,10 +17,11 @@ var (
 	resolver string
 )
 
+// rootCmd is the base command for DNSKit.
 var rootCmd = &cobra.Command{
 	Use:   "dnskit",
 	Short: "DNSKit - A modern DNS analysis CLI",
-	Long: `DNSKit is a modern and structured command-line tool 
+	Long: `DNSKit is a modern and structured command-line tool
 designed for DNS analysis, penetration testing, and system administration.`,
 	// This runs when the user calls `dnskit` without any subcommand
 	Run: func(cmd *cobra.Command, args []string) {

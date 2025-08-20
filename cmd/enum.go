@@ -9,31 +9,34 @@ import (
 )
 
 var (
-	enumWordlist    string
+	// enumWordlist stores the path to the subdomain wordlist.
+	enumWordlist string
+	// enumConcurrency controls how many concurrent lookups are performed.
 	enumConcurrency int
 )
 
+// enumCmd enumerates subdomains for the provided domain.
 var enumCmd = &cobra.Command{
 	Use:   "enum [domain]",
 	Short: "Enumerate subdomains",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		domain := args[0]
-		subs, err := dnsutils.Enumerate(domain, enumWordlist, enumConcurrency, resolver)
+		subdomains, err := dnsutils.Enumerate(domain, enumWordlist, enumConcurrency, resolver)
 		if err != nil {
 			return err
 		}
 
 		if outputJSON {
-			data := map[string]interface{}{"domain": domain, "subdomains": subs}
-			b, err := json.MarshalIndent(data, "", "  ")
+						outputData := map[string]interface{}{"domain": domain, "subdomains": subdomains}
+			jsonOutput, err := json.MarshalIndent(outputData, "", "  ")
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(b))
+			fmt.Println(string(jsonOutput))
 		} else {
-			for _, sub := range subs {
-				output.Success(sub)
+			for _, subdomain := range subdomains {
+				output.Success(subdomain)
 			}
 		}
 		return nil
