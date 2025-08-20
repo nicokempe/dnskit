@@ -14,12 +14,14 @@
 
 ### Download prebuilt binaries (recommended)
 
-Grab the latest ZIP/TAR for your OS/arch from the [Releases](https://github.com/nicokempe/dnskit/releases) page and put the `dnskit` binary on your `PATH`.
+Grab the latest ZIP/TAR for your OS/arch from the [Releases](https://github.com/nicokempe/dnskit/releases) page, extract it, and place the `dnskit` binary somewhere on your `PATH` so the `dnskit` command is available from a terminal.
 
-* **Windows:** download `dnskit_*_windows_amd64.zip` (or `arm64`), unzip, run `dnskit.exe`
-* **macOS:** download `dnskit_*_darwin_amd64.tar.gz` (or `arm64`), extract, run `./dnskit`
-* **Linux:** download `dnskit_*_linux_amd64.tar.gz` (or `arm64`), extract, run `./dnskit`
-  *(Deb/RPM packages are also available under Assets.)*
+> **Note**
+> `dnskit` is a command-line application. Double-clicking the executable in a file explorer (for example, on Windows) will only show a message telling you to use a terminal.
+
+* **Windows:** download `dnskit_*_windows_amd64.zip` (or `arm64`), unzip, then run `dnskit.exe` from **cmd.exe** or **PowerShell**. To invoke `dnskit` from any folder, add the directory that contains `dnskit.exe` to your `PATH`.
+* **macOS:** download `dnskit_*_darwin_amd64.tar.gz` (or `arm64`), extract, make it executable (`chmod +x dnskit` if needed) and move it to a directory on your `PATH` such as `/usr/local/bin`.
+* **Linux:** download `dnskit_*_linux_amd64.tar.gz` (or `arm64`), extract, make it executable (`chmod +x dnskit`) and move it to a directory on your `PATH`.
 
 ### Build from source
 
