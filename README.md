@@ -1,4 +1,4 @@
-[![DNSKit GitHub Banner](/.github/banner.webp)](https://www.nicokempe.de)
+[![DNSKit GitHub Banner](/.github/banner.svg)](https://www.nicokempe.de)
 
 ## ✨ Features
 
