@@ -28,7 +28,7 @@ var enumCmd = &cobra.Command{
 		}
 
 		if outputJSON {
-						outputData := map[string]interface{}{"domain": domain, "subdomains": subdomains}
+			outputData := map[string]interface{}{"domain": domain, "subdomains": subdomains}
 			jsonOutput, err := json.MarshalIndent(outputData, "", "  ")
 			if err != nil {
 				return err

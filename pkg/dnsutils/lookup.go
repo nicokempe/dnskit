@@ -44,7 +44,7 @@ func Lookup(hostname, recordType, resolverAddr string) ([]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		records = append(records, cname)
+		records = append(records, canonicalName)
 	case "MX":
 		mxRecords, err := resolver.LookupMX(lookupCtx, hostname)
 		if err != nil {
