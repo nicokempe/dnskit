@@ -5,6 +5,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	// outputJSON controls whether commands should emit JSON instead of
+	// colorized text. It is exposed as a persistent flag on the root
+	// command and therefore available to all subcommands.
+	outputJSON bool
+
+	// resolver allows the user to override the system DNS resolver. It is
+	// a hostname or IP (optionally including a port) that will be used for
+	// all DNS queries when provided.
+	resolver string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "dnskit",
 	Short: "DNSKit - A modern DNS analysis CLI",
@@ -23,6 +35,7 @@ func Execute() error {
 }
 
 func init() {
-	// Here we can define global flags if needed
-	// e.g. rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
+	// Global persistent flags shared by all subcommands
+	rootCmd.PersistentFlags().BoolVar(&outputJSON, "json", false, "Output results in JSON format")
+	rootCmd.PersistentFlags().StringVar(&resolver, "resolver", "", "Use a custom DNS resolver (ip[:port])")
 }

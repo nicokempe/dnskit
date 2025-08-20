@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/nicokempe/dnskit/pkg/dnsutils"
+	"github.com/nicokempe/dnskit/pkg/output"
 	"github.com/spf13/cobra"
 )
 
@@ -20,8 +22,17 @@ var transferCmd = &cobra.Command{
 			return nil
 		}
 
-		for _, record := range records {
-			fmt.Println(record)
+		if outputJSON {
+			data := map[string]interface{}{"domain": domain, "records": records}
+			b, err := json.MarshalIndent(data, "", "  ")
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(b))
+		} else {
+			for _, record := range records {
+				output.Success(record)
+			}
 		}
 		return nil
 	},

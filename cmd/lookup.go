@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/nicokempe/dnskit/pkg/dnsutils"
+	"github.com/nicokempe/dnskit/pkg/output"
 	"github.com/spf13/cobra"
 )
 
@@ -14,13 +16,22 @@ var lookupCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1), // We expect exactly one hostname argument
 	RunE: func(cmd *cobra.Command, args []string) error {
 		hostname := args[0]
-		results, err := dnsutils.Lookup(hostname, recordType)
+		results, err := dnsutils.Lookup(hostname, recordType, resolver)
 		if err != nil {
 			return err
 		}
 
-		for _, r := range results {
-			fmt.Println(r)
+		if outputJSON {
+			data := map[string]interface{}{"hostname": hostname, "type": recordType, "records": results}
+			b, err := json.MarshalIndent(data, "", "  ")
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(b))
+		} else {
+			for _, r := range results {
+				output.Success(r)
+			}
 		}
 		return nil
 	},
