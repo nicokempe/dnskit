@@ -15,7 +15,7 @@ var recordType string
 var lookupCmd = &cobra.Command{
 	Use:   "lookup [hostname]",
 	Short: "Perform basic DNS lookups",
-	Args:  cobra.ExactArgs(1), // We expect exactly one hostname argument
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		hostname := args[0]
 		recordResults, err := dnsutils.Lookup(hostname, recordType, resolver)

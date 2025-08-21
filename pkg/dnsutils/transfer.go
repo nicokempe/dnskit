@@ -5,7 +5,8 @@ import (
 	"github.com/miekg/dns"
 )
 
-// ZoneTransfer attempts to perform a DNS zone transfer against the provided nameserver.
+// ZoneTransfer attempts a DNS zone transfer (AXFR) for the specified domain
+// using the supplied nameserver address.
 func ZoneTransfer(domain, nameserverAddr string) ([]string, error) {
 	if nameserverAddr == "" {
 		return nil, fmt.Errorf("no nameserver provided")
@@ -14,7 +15,6 @@ func ZoneTransfer(domain, nameserverAddr string) ([]string, error) {
 	var zoneRecords []string
 	// Ensure the nameserver address includes a port; default to 53.
 	if nameserverAddr[:1] == "[" || nameserverAddr[len(nameserverAddr)-1:] == "]" {
-		// IPv6 in brackets
 		if len(nameserverAddr) >= 2 && nameserverAddr[len(nameserverAddr)-2:] != ":53" {
 			nameserverAddr = fmt.Sprintf("%s:53", nameserverAddr)
 		}
@@ -22,19 +22,18 @@ func ZoneTransfer(domain, nameserverAddr string) ([]string, error) {
 		nameserverAddr = fmt.Sprintf("%s:53", nameserverAddr)
 	}
 
-	// Prepare AXFR message
-	zoneTransferMsg := new(dns.Msg)
-	zoneTransferMsg.SetAxfr(domain + ".")
+	zoneTransferRequest := new(dns.Msg)
+	zoneTransferRequest.SetAxfr(domain + ".")
 
-	transferClient := new(dns.Transfer)
+	dnsTransferClient := new(dns.Transfer)
 
-	// Perform the transfer
-	transferResults, err := transferClient.In(zoneTransferMsg, nameserverAddr)
+	transferMessages, err := dnsTransferClient.In(zoneTransferRequest, nameserverAddr)
+
 	if err != nil {
 		return nil, err
 	}
 
-	for envelope := range transferResults {
+	for envelope := range transferMessages {
 		if envelope.Error != nil {
 			return nil, envelope.Error
 		}

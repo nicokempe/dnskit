@@ -29,9 +29,10 @@ func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string
 	defer wordlistFile.Close()
 
 	resolver := getResolver(resolverAddr)
-	lookupCtx := context.Background()
+	lookupContext := context.Background()
 
-	wordQueue := make(chan string)
+	// wordChan feeds words from the wordlist to worker goroutines.
+	wordChan := make(chan string)
 	var waitGroup sync.WaitGroup
 	var resultMutex sync.Mutex
 
@@ -39,9 +40,9 @@ func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string
 		waitGroup.Add(1)
 		go func() {
 			defer waitGroup.Done()
-			for word := range wordQueue {
+			for word := range wordChan {
 				candidateSubdomain := fmt.Sprintf("%s.%s", word, domain)
-				if _, err := resolver.LookupIPAddr(lookupCtx, candidateSubdomain); err == nil {
+				if _, err := resolver.LookupIPAddr(lookupContext, candidateSubdomain); err == nil {
 					resultMutex.Lock()
 					discoveredSubdomains = append(discoveredSubdomains, candidateSubdomain)
 					resultMutex.Unlock()
@@ -52,9 +53,9 @@ func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string
 
 	scanner := bufio.NewScanner(wordlistFile)
 	for scanner.Scan() {
-		wordQueue <- scanner.Text()
+		wordChan <- scanner.Text()
 	}
-	close(wordQueue)
+	close(wordChan)
 	waitGroup.Wait()
 
 	if err := scanner.Err(); err != nil {
