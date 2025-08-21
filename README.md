@@ -2,7 +2,7 @@
 
 ## ✨ Features
 
-* 🔎 **DNS Lookup** for all major record types (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`, …)
+* 🔎 **DNS Lookup** for all major record types (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS` and `SRV`)
 * 🚀 **Subdomain Enumeration** with concurrency for speed
 * 🛡 **Zone Transfer** (`AXFR`) checks to find misconfigurations
 * ↩️ **Reverse DNS** lookups (IPv4 + IPv6)
@@ -44,30 +44,30 @@ dnskit --help
 
 **Global Flags**
 
-* `--json` — Output results in JSON format
-* `--resolver <ip[:port]>` — Use a custom DNS resolver
+* `--json` - Output results in JSON format
+* `--resolver <ip[:port]>` - Use a custom DNS resolver
 
 ### Subcommands
 
-* **lookup** — Query a specific record type
+* **lookup** - Query a specific record type
 
   ```bash
   dnskit lookup <hostname> --type A|AAAA|MX|TXT|NS|CNAME|SRV
   ```
 
-* **enum** — Enumerate subdomains with concurrency
+* **enum** - Enumerate subdomains with concurrency
 
   ```bash
   dnskit enum <domain> --wordlist subdomains.txt --concurrency 10
   ```
 
-* **transfer** — Attempt DNS zone transfer (AXFR)
+* **transfer** - Attempt DNS zone transfer (AXFR)
 
   ```bash
   dnskit transfer <domain> --nameserver <ns.host>
   ```
 
-* **reverse** — Reverse DNS lookups (IPv4/IPv6)
+* **reverse** - Reverse DNS lookups (IPv4/IPv6)
 
   ```bash
   dnskit reverse <ip>
@@ -77,9 +77,9 @@ dnskit --help
 
 Releases follow the format **`vYYYY.MM.VV`**:
 
-* `YYYY` — year (e.g., `2025`)
-* `MM` — month (`01`–`12`)
-* `VV` — sequential release number within the month (resets each month)
+* `YYYY` - year (e.g., `2025`)
+* `MM` - month (`01`–`12`)
+* `VV` - sequential release number within the month (resets each month)
 
 Examples:
 
@@ -105,13 +105,13 @@ Examples:
    * **Windows (PowerShell)**
 
      ```powershell
-     ./scripts/new-release.ps1 v2025.08.1
+     ./scripts/new-release.ps1 <version> (replace <version> with e.g. v2025.08.1)
      ```
 
    * **Linux/macOS (Bash)**
 
      ```bash
-     ./scripts/new-release.sh v2025.08.1
+     ./scripts/new-release.sh <version> (replace <version> with e.g. v2025.08.1)
      ```
 
    These scripts:
@@ -119,7 +119,7 @@ Examples:
    * Validate the version format
    * Commit any pending changes
    * Create a Git tag
-   * Push tag → triggers GitHub Actions GoReleaser
+   * Push tag ➜ triggers GitHub Actions GoReleaser
 
 3. **GitHub Actions builds & publishes**
 
@@ -128,7 +128,7 @@ Examples:
    * Builds binaries for Linux, macOS, Windows (amd64 + arm64)
    * Packages as `.tar.gz`, `.zip`, `.deb`, `.rpm`
    * Publishes assets to GitHub Releases
-   * Updates Winget manifests (if configured)
+   * Updates Winget manifests
 
 ## 🧰 Development
 
@@ -153,4 +153,4 @@ Generated automatically from Conventional Commits via [changelogen](https://gith
 
 ## 📜 License
 
-MIT — see [LICENSE](./LICENSE).
+This project is licensed under the [MIT LICENSE](./LICENSE).
