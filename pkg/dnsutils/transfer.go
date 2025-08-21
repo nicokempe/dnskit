@@ -5,8 +5,13 @@ import (
 	"github.com/miekg/dns"
 )
 
-// ZoneTransfer attempts a DNS zone transfer (AXFR) for the specified domain
-// using the supplied nameserver address.
+/*
+ZoneTransfer attempts a DNS zone transfer (AXFR).
+
+	@param domain domain to query.
+	@param nameserverAddr target nameserver.
+	@returns zone records or an error.
+*/
 func ZoneTransfer(domain, nameserverAddr string) ([]string, error) {
 	if nameserverAddr == "" {
 		return nil, fmt.Errorf("no nameserver provided")
@@ -44,7 +49,7 @@ func ZoneTransfer(domain, nameserverAddr string) ([]string, error) {
 	return zoneRecords, nil
 }
 
-// containsPort checks whether the host string already specifies a port.
+// containsPort reports whether the host string already specifies a port.
 func containsPort(hostAddress string) bool {
 	return len(hostAddress) > 0 && (hostAddress[0] == '[' || (hostAddress[len(hostAddress)-3:] == ":53"))
 }

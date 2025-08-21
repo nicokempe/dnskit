@@ -9,13 +9,13 @@ import (
 )
 
 var (
-	// enumWordlist stores the path to the subdomain wordlist.
+	// enumWordlist is the path to the subdomain wordlist.
 	enumWordlist string
-	// enumConcurrency controls how many concurrent lookups are performed.
+	// enumConcurrency controls the number of concurrent lookups.
 	enumConcurrency int
 )
 
-// enumCmd enumerates subdomains for the provided domain.
+// enumCmd enumerates subdomains for a domain.
 var enumCmd = &cobra.Command{
 	Use:   "enum [domain]",
 	Short: "Enumerate subdomains",

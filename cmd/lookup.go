@@ -11,7 +11,7 @@ import (
 // recordType specifies the DNS record type for lookup.
 var recordType string
 
-// lookupCmd performs DNS record lookups for a given hostname.
+// lookupCmd performs DNS record lookups for a hostname.
 var lookupCmd = &cobra.Command{
 	Use:   "lookup [hostname]",
 	Short: "Perform basic DNS lookups",

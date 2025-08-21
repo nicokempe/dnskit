@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// nameserverAddr specifies the target nameserver for zone transfers.
+// nameserverAddr is the target nameserver for zone transfers.
 var nameserverAddr string
 
-// transferCmd attempts a DNS zone transfer (AXFR) for the given domain.
+// transferCmd attempts DNS zone transfers (AXFR).
 var transferCmd = &cobra.Command{
 	Use:   "transfer [domain]",
 	Short: "Attempt a DNS zone transfer (AXFR)",

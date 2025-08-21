@@ -7,14 +7,10 @@ import (
 )
 
 var (
-	// outputJSON controls whether commands should emit JSON instead of
-	// colorized text. It is exposed as a persistent flag on the root
-	// command and therefore available to all subcommands.
+	// outputJSON emits JSON instead of colorized text.
 	outputJSON bool
 
-	// resolver allows the user to override the system DNS resolver. It is
-	// a hostname or IP (optionally including a port) that will be used for
-	// all DNS queries when provided.
+	// resolver overrides the system DNS resolver (host[:port]).
 	resolver string
 )
 
@@ -31,7 +27,7 @@ designed for DNS analysis, penetration testing, and system administration.`,
 	},
 }
 
-// Execute runs the root command. It is invoked by main.go.
+// Execute runs the root command.
 func Execute() error {
 	return rootCmd.Execute()
 }

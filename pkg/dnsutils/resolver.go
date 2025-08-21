@@ -6,9 +6,12 @@ import (
 	"strings"
 )
 
-// getResolver returns a *net.Resolver. If resolverAddress is empty the system
-// resolver is used. When provided, the address should be in the form
-// host[:port]. If the port is omitted, 53 is assumed.
+/*
+getResolver creates a DNS resolver.
+
+	@param resolverAddress custom resolver in form host[:port]; empty uses system resolver.
+	@returns configured *net.Resolver.
+*/
 func getResolver(resolverAddress string) *net.Resolver {
 	if resolverAddress == "" {
 		return net.DefaultResolver

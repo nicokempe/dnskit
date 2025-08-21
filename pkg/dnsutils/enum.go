@@ -8,9 +8,15 @@ import (
 	"sync"
 )
 
-// Enumerate performs subdomain enumeration using a wordlist. Lookups are
-// executed concurrently according to the provided concurrency level and may use
-// a custom DNS resolver.
+/*
+Enumerate subdomains using a wordlist.
+
+	@param domain base domain.
+	@param wordlistPath path to subdomain wordlist.
+	@param concurrency number of concurrent lookups.
+	@param resolverAddr optional custom resolver.
+	@returns discovered subdomains or an error.
+*/
 func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string) ([]string, error) {
 	var discoveredSubdomains []string
 
@@ -31,7 +37,6 @@ func Enumerate(domain, wordlistPath string, concurrency int, resolverAddr string
 	resolver := getResolver(resolverAddr)
 	lookupContext := context.Background()
 
-	// wordChan feeds words from the wordlist to worker goroutines.
 	wordChan := make(chan string)
 	var waitGroup sync.WaitGroup
 	var resultMutex sync.Mutex

@@ -6,8 +6,14 @@ import (
 	"strings"
 )
 
-// Lookup queries DNS records of the specified type for the provided hostname.
-// A custom resolver address can be supplied; otherwise the system resolver is used.
+/*
+Lookup DNS records for a hostname.
+
+	@param hostname target hostname.
+	@param recordType DNS record type.
+	@param resolverAddr optional custom resolver.
+	@returns records or an error.
+*/
 func Lookup(hostname, recordType, resolverAddr string) ([]string, error) {
 	var recordResults []string
 

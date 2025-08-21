@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// versionCmd prints the current version of DNSKit.
+// versionCmd prints the current DNSKit version.
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version number",

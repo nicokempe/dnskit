@@ -1,16 +1,15 @@
 package version
 
-// Version represents the semantic version of the DNSKit build.
-// Commit stores the short git commit hash used for the build.
-// Date records the build date in UTC.
 var (
+	// Version is the semantic version of the DNSKit build.
 	Version = "dev"
-	Commit  = ""
-	Date    = ""
+	// Commit is the short git commit hash for the build.
+	Commit = ""
+	// Date is the build date in UTC.
+	Date = ""
 )
 
-// Info returns a human-readable version string including commit and build date
-// information when available.
+// Info returns a human-readable version string, including commit and build date when available.
 func Info() string {
 	versionInfo := Version
 	if Commit != "" {
